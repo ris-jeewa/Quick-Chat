@@ -8,7 +8,7 @@ export const Message = () => {
         <span>Just Now</span>
       </div>
       <div className="messageContent">
-        {/* <img src="https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" /> */}
+        <img src="https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&w=600" alt="" />
         <p>Hello</p>
       </div>
     </div>

@@ -1,18 +1,46 @@
-import React from 'react'
+import React, { useState } from "react";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
 export const Search = () => {
+  const [userName, setUserName] = useState("");
+  const [err, setErr] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const handleSearch = async () => {
+    const q = query(collection(db, "users"), where("displayName", "==", userName));
+
+    try {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setUser(doc.data());
+      });
+    } catch (err) {
+      setErr(true);
+    }
+  };
+  const handleKey = (e) => {
+    e.code === "Enter" && handleSearch();
+  };
   return (
-    <div className='search'>
+    <div className="search">
       <div className="searchForm">
-        <input type="text" placeholder='Search Name'/>
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXNlYXJjaCI+PGNpcmNsZSBjeD0iMTEiIGN5PSIxMSIgcj0iOCIvPjxwYXRoIGQ9Im0yMSAyMS00LjMtNC4zIi8+PC9zdmc+" alt="" />
+        <input
+          type="text"
+          placeholder="Search Name"
+          onKeyDown={handleKey}
+          onChange={(e) => setUserName(e.target.value)}
+        />
       </div>
-      <div className="userChat">
-        <img src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600" alt="img" />
-        <div className="userChatInfo">
-          <span>Jane</span>
+      {err && <span>User not Found</span>}
+      {user && (
+        <div className="userChat">
+          <img src={user.photoURL} alt="img" />
+          <div className="userChatInfo">
+            <span>{user.displayName}</span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
-  )
-}
+  );
+};

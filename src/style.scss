@@ -5,6 +5,28 @@
     font-family:"Poppins", sans-serif;
 }
 
+@mixin mobile{
+    @media screen and (max-width:480px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media screen and (max-width:768px) {
+        @content;
+    }
+}
+@mixin laptop {
+    @media screen and (max-width:1200px) {
+        @content;
+    }
+}
+
+$darkColor:#3d0a43;
+.no-visible-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
 .formContainer {
     background-color:#a7bcff;
     height: 100vh;
@@ -23,6 +45,7 @@
             color: #5d5b8d;
             font-weight: bold;
             font-size: 24px;
+
         }
         form{
             display: flex;
@@ -73,7 +96,7 @@
 }
 
 .home {
-    background-color: #3d0a43;
+    background-color: $darkColor;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -88,11 +111,16 @@
         overflow: hidden;
         padding: 15px;
 
+        @include tablet{
+            width: 90%;
+        }
+
         .sidebar {
             flex: 0.8;
             background-color: white;
             border-radius: 20px;
-            
+             position: relative;
+
             .navbar {
                 display: flex;
                 align-items: center;
@@ -103,6 +131,9 @@
 
                 .logo {
                     font-weight: bold;
+                    @include tablet{
+                        display:none;
+                    }
                 }
 
                 .user {
@@ -123,6 +154,12 @@
                         font-size: 10px;
                         border: none;
                         cursor: pointer;
+                        border-radius: 10px;
+                        padding: 2px 5px;
+                        @include tablet{
+                            position: absolute;
+                            bottom: 10px;
+                        }
 
                     }
                 }
@@ -242,6 +279,7 @@
                             background-color: white;
                             padding: 10px 20px;
                             border-radius: 10px 10px 10px 0px;
+                            max-width: max-content;
                         }
                         img{
                             width: 50%;
@@ -251,10 +289,13 @@
                     &.owner {
                         flex-direction: row-reverse;
 
-                        p{
-                            background-color: #5476e7;
-                            color: white;
-                            border-radius: 10px 10px 0px 10px;
+                        .messageContent {
+                            align-items: flex-end;
+                            p{
+                                background-color: #5476e7;
+                                color: white;
+                                border-radius: 10px 10px 0px 10px;
+                            }
                         }
                     }
                 }
