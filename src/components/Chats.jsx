@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase"
+import { db } from "../firebase";
+import { ChatContext } from "../context/ChatContext";
 export const Chats = () => {
   const [chats, setChats] = useState([]);
   const { currentUser } = useContext(AuthContext);
+  const { dispatch } = useContext(ChatContext);
 
   useEffect(() => {
     const getChats = () => {
@@ -20,41 +22,20 @@ export const Chats = () => {
     currentUser.uid && getChats();
   }, [currentUser.uid]);
 
-  console.log("chats",Object.entries(chats));
+  const handleSelect = (user) => {
+    dispatch({type:"CHANGE_USER",payload:user})
+  }
   return (
     <div className="chats">
-      <div className="userChat">
-        <img
-          src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600"
-          alt="img"
-        />
-        <div className="userChatInfo">
-          <span>Jane</span>
-          <p>Hello</p>
+      {Object.entries(chats)?.map((chat) => (
+        <div className="userChat" key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
+          <img src={chat[1].userInfo.photoURL} alt="img" />
+          <div className="userChatInfo">
+            <span>{chat[1].userInfo.displayName}</span>
+            <p>{chat[1].userInfo.lastMessage?.text}</p>
+          </div>
         </div>
-      </div>
-
-      <div className="userChat">
-        <img
-          src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600"
-          alt="img"
-        />
-        <div className="userChatInfo">
-          <span>Jane</span>
-          <p>Hello</p>
-        </div>
-      </div>
-
-      <div className="userChat">
-        <img
-          src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?auto=compress&cs=tinysrgb&w=600"
-          alt="img"
-        />
-        <div className="userChatInfo">
-          <span>Jane</span>
-          <p>Hello</p>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
