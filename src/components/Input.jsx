@@ -46,6 +46,18 @@ const Input = () => {
         }),
       });
     }
+
+    await updateDoc(doc(db,"userChats",currentUser.uid),{
+      [data.chatId + ".lastMessage"]: {text},
+      [data.chatId + ".date"]:serverTimestamp(),
+    })
+    
+    await updateDoc(doc(db,"userChats",data.user.uid),{
+      [data.chatId + ".lastMessage"]: {text},
+      [data.chatId + ".date"]:serverTimestamp(),
+    })
+    setText("");
+    setImg(null);
   };
 
   return (
@@ -68,6 +80,7 @@ const Input = () => {
           placeholder="Type something..."
           style={{ width: "100%" }}
           onChange={(e) => setText(e.target.value)}
+          value={text}
         />
       </div>
       <div className="send">
