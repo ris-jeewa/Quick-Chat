@@ -22,7 +22,7 @@ export const Message = ({ message }) => {
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays >= 2) {
-      return notificationDate.toDateString();
+      return messageDate.toDateString();
     } else if (diffDays === 1) {
       return "Yesterday";
     } else {
