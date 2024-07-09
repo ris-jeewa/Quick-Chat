@@ -43,6 +43,8 @@ export const Search = () => {
 
   const handleKey = (e) => {
     e.code === "Enter" && handleSearch();
+    setUser(null);
+    setErr(false);
   };
 
   const handleSelect = async () => {
@@ -81,6 +83,7 @@ export const Search = () => {
 
     setUser(null);
     setUserName("");
+    setErr(false);
   };
 
   return (

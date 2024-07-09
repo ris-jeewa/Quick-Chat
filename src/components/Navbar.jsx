@@ -9,7 +9,6 @@ export const Navbar = () => {
 
   return (
     <div className='navbar'>
-        <div className="logo">Ris Chat</div>
         <div className="user">
             <img src={currentUser.photoURL} alt="image" />
             <span>{currentUser.displayName}</span>
