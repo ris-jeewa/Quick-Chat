@@ -1,11 +1,17 @@
 import React, { useContext } from "react";
-import { signOut } from "firebase/auth";
+import { signOut, updateProfile } from "firebase/auth";
 import { AuthContext } from "../context/AuthContext";
-import { auth } from "../firebase";
+import { auth, db, storage } from "../firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 export const Navbar = () => {
   const [settings, setSettings] = React.useState(false);
   const { currentUser } = useContext(AuthContext);
+
+  const openSettings = (bool) => {
+    setSettings(bool);
+  }
 
   return (
     <div className="navbar">
@@ -18,7 +24,7 @@ export const Navbar = () => {
         alt=""
         onClick={() => setSettings(!settings)}
       />
-      {settings && <Settings currentUser={currentUser} />}
+      {settings && <Settings currentUser={currentUser} handleOpen={openSettings}/>}
       <button onClick={() => signOut(auth)} className="logout">
         Logout
       </button>
@@ -26,23 +32,46 @@ export const Navbar = () => {
   );
 };
 
-export const Settings = ({ currentUser }) => {
+export const Settings = ({ currentUser,handleOpen }) => {
   const [err, setErr] = React.useState(false);
   const [name, setName] = React.useState(currentUser.displayName);
   const [img, setImg] = React.useState(currentUser.photoURL);
 
-  const handleEdit = (newName) => {
-    setName(newName);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    handleOpen(false);
+    setErr(false);
+
+    const file = e.target[1].files[0];
+
     try {
+      let downloadURL = currentUser.photoURL;
+
+      if (file) {
+        const date = new Date().getTime();
+        const storageRef = ref(storage, `${currentUser.uid + date}`);
+
+        await uploadBytesResumable(storageRef, file);
+        downloadURL = await getDownloadURL(storageRef);
+
+        
+      }
+
       await updateProfile(currentUser, {
+            displayName: name,
+            photoURL: downloadURL,
+          });
+
+      const userDocRef = doc(db,"users", currentUser.uid);
+      await updateDoc(userDocRef,{
         displayName: name,
-        photoURL: img,
-      });
+        photoURL: downloadURL,
+      }),
+
+      setImg(downloadURL);
+        
     } catch (err) {
+      console.log(err);
       setErr(true);
     }
   };
@@ -54,8 +83,9 @@ export const Settings = ({ currentUser }) => {
           type="text"
           placeholder="Enter Name"
           value={name}
-          onChange={(e) => handleEdit(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
+        <input style={{ display: "none" }} type="file" id="file" />
         <label htmlFor="file">
           <img src="/fileadd.svg" alt="add file" />
           <span>Change the avatar</span>
