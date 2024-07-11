@@ -11,7 +11,7 @@ export const Navbar = () => {
 
   const openSettings = (bool) => {
     setSettings(bool);
-  }
+  };
 
   return (
     <div className="navbar">
@@ -24,7 +24,9 @@ export const Navbar = () => {
         alt=""
         onClick={() => setSettings(!settings)}
       />
-      {settings && <Settings currentUser={currentUser} handleOpen={openSettings}/>}
+      {settings && (
+        <Settings currentUser={currentUser} handleOpen={openSettings} />
+      )}
       <button onClick={() => signOut(auth)} className="logout">
         Logout
       </button>
@@ -32,14 +34,14 @@ export const Navbar = () => {
   );
 };
 
-export const Settings = ({ currentUser,handleOpen }) => {
+export const Settings = ({ currentUser, handleOpen }) => {
   const [err, setErr] = React.useState(false);
   const [name, setName] = React.useState(currentUser.displayName);
   const [img, setImg] = React.useState(currentUser.photoURL);
+  const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    handleOpen(false);
     setErr(false);
 
     const file = e.target[1].files[0];
@@ -53,23 +55,22 @@ export const Settings = ({ currentUser,handleOpen }) => {
 
         await uploadBytesResumable(storageRef, file);
         downloadURL = await getDownloadURL(storageRef);
-
-        
       }
-
+      setLoading(true);
       await updateProfile(currentUser, {
-            displayName: name,
-            photoURL: downloadURL,
-          });
+        displayName: name,
+        photoURL: downloadURL,
+      });
 
-      const userDocRef = doc(db,"users", currentUser.uid);
-      await updateDoc(userDocRef,{
+      const userDocRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userDocRef, {
         displayName: name,
         photoURL: downloadURL,
       }),
+        setLoading(false);
+      handleOpen(false);
 
       setImg(downloadURL);
-        
     } catch (err) {
       console.log(err);
       setErr(true);
@@ -90,7 +91,9 @@ export const Settings = ({ currentUser,handleOpen }) => {
           <img src="/fileadd.svg" alt="add file" />
           <span>Change the avatar</span>
         </label>
-        <button>Save</button>
+        <button>
+          {loading ? <div className="loader-circle animate-spin" /> : "Save"}
+        </button>
         {err && <p className="error">Something went wrong</p>}
       </form>
     </div>
