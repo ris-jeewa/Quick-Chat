@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:"Poppins", sans-serif;
 }
 
 @mixin mobile{
@@ -132,15 +133,21 @@ $darkColor:#3d0a43;
     gap:20px;
     align-items: center;
     justify-content: center;
+    font-family:"Poppins", sans-serif;
 
     .logo {
-        color: white;
+        color: #3d0a43;
         font-size: 24px;
         font-weight: bold;
-        font-family: "Ga Maamli", sans-serif;
+        font-family:"PT Serif", serif;
         background-image:linear-gradient(120deg, #cf78df 0%, #4e126e 100%);
         padding: 10px 20px;
         border-radius: 10px;
+
+        img {
+            width: 30px;
+            height: 30px;
+        }
         
     }
     .container {

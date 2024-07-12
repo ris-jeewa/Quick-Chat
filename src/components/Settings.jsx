@@ -33,6 +33,8 @@ export const Settings = ({ currentUser, handleOpen }) => {
         });
   
         const userDocRef = doc(db, "users", currentUser.uid);
+        const userChatsDocRef = doc(db, "userChats", currentUser.uid);
+        
         await updateDoc(userDocRef, {
           displayName: name,
           photoURL: downloadURL,
@@ -42,7 +44,6 @@ export const Settings = ({ currentUser, handleOpen }) => {
   
         setImg(downloadURL);
       } catch (err) {
-        console.log(err);
         setErr(true);
       }
     };
