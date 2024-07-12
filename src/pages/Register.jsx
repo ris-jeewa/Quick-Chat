@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 export const Register = () => {
   const [err, setErr] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +19,7 @@ export const Register = () => {
     const file = e.target[3].files[0];
 
     try {
+      setLoading(true);
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
       const date = new Date().getTime();
@@ -51,6 +53,8 @@ export const Register = () => {
     } catch (err) {
       console.log("last", err.message);
       setErr(true);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -68,7 +72,9 @@ export const Register = () => {
             <img src="/fileadd.svg" alt="add file" />
             <span>Add an avatar</span>
           </label>
-          <button>Sign Up</button>
+          <button>
+            {loading? <div className="loader-circle animate-spin" />:"Sign Up"}
+          </button>
           {err && <p>Something went wrong!</p>}
         </form>
         <p>
