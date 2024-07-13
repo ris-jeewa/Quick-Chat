@@ -61,7 +61,13 @@ export const Register = () => {
   return (
     <div className="formContainer">
       <div className="formWrapper">
-        <span className="logo">Ris Chat</span>
+      <div className="logo">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/chat-ae78b.appspot.com/o/Blue_Minimalist_Chat_Application_Logo-removebg-preview.png?alt=media&token=661fec1a-98b6-48be-8d10-8555ff854815"
+          alt="logo"
+        />
+        <span>Quick Chat</span>
+      </div>
         <span className="title">Register</span>
         <form onSubmit={handleSubmit}>
           <input type="text" placeholder="Enter Name" />

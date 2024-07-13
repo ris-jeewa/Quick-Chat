@@ -22,14 +22,32 @@
         @content;
     }
 }
+.logo {
+    color: #3d0a43;
+    font-size: 24px;
+    font-weight: bold;
+    font-family:"PT Serif", serif;
+    background-image:linear-gradient(120deg, #cf78df 0%, #4e126e 100%);
+    padding: 10px 20px;
+    border-radius: 10px;
+
+    img {
+        width: 30px;
+        height: 30px;
+    }
+    
+}
 
 $darkColor:#3d0a43;
+$lightColor:#f4def3;
+$background: #a573ad;
+
 .no-visible-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
 .formContainer {
-    background-color:#a7bcff;
+    background-color:$background;
     height: 100vh;
     display: flex;
     align-items: center;
@@ -42,11 +60,12 @@ $darkColor:#3d0a43;
         flex-direction: column;
         gap: 10px;
         align-items: center;
-        .logo {
-            color: #5d5b8d;
-            font-weight: bold;
-            font-size: 24px;
 
+        .title {
+            color: $darkColor;
+            font-size: 24px;
+            font-weight: bold;
+            font-family:"PT Serif", serif;
         }
         form{
             display: flex;
@@ -57,15 +76,15 @@ $darkColor:#3d0a43;
                 padding: 15px;
                 border: none;
                 width: 250px;
-                border-bottom: 1px solid#a7bcff ;
+                border-bottom: 1px solid $darkColor ;
                 &::placeholder {
                     color: rgb(175,175,175);
                 }
             }
 
             button {
-                background-color: #a7bcff;
-                color: white;
+                background-color: $lightColor;
+                color: black;
                 padding: 10px;
                 border: none;
                 font-weight: bold;
@@ -90,7 +109,7 @@ $darkColor:#3d0a43;
                 .loader-circle {
                     width: 20px;
                     height: 20px;
-                    border: 2px solid #ffffff;
+                    border: 2px solid $darkColor;
                     border-top: 2px solid transparent;
                     border-radius: 50%;
                 }
@@ -100,20 +119,20 @@ $darkColor:#3d0a43;
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                color: #8da4f1;
+                color: $darkColor;
                 font-size: 12px;
                 cursor: pointer;
 
                 img {
                     width: 32px;
                     height: 32px;
-                    opacity: 0.5;
+                    opacity: 0.2;
                 
                 }
             }
         }
         p {
-            color:#5d5b8d;
+            color:#000000;
             font-size: 12px;
             margin-top: 10px;
         }
@@ -135,21 +154,6 @@ $darkColor:#3d0a43;
     justify-content: center;
     font-family:"Poppins", sans-serif;
 
-    .logo {
-        color: #3d0a43;
-        font-size: 24px;
-        font-weight: bold;
-        font-family:"PT Serif", serif;
-        background-image:linear-gradient(120deg, #cf78df 0%, #4e126e 100%);
-        padding: 10px 20px;
-        border-radius: 10px;
-
-        img {
-            width: 30px;
-            height: 30px;
-        }
-        
-    }
     .container {
         background-color: #f4def3;
         border-radius: 20px;
