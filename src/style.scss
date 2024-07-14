@@ -334,7 +334,7 @@ $background: #a573ad;
                     }
                     img {
                         width: 40px;
-                        height: 40px;
+                        height: 40px;   
                         border-radius: 50%;
                         object-fit: cover;
                     }
@@ -356,6 +356,7 @@ $background: #a573ad;
             }
 
         }
+        
         .chat {
             flex:2;
             margin-left: 20px;

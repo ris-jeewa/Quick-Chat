@@ -1,8 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  getDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { ChatContext } from "../context/ChatContext";
+
 export const Chats = () => {
   const [chats, setChats] = useState([]);
   const { currentUser } = useContext(AuthContext);
@@ -22,21 +29,49 @@ export const Chats = () => {
     currentUser.uid && getChats();
   }, [currentUser.uid]);
 
-  const handleSelect = (user) => {
-    dispatch({type:"CHANGE_USER",payload:user})
-  }
-  console.log("chats",chats);
+  const handleSelect = async (user) => {
+    const details = await getDoc(doc(db, "users", user.uid));
+    dispatch({ type: "CHANGE_USER", payload: details.data() });
+  };
+
   return (
     <div className="chats">
-      {Object.entries(chats)?.sort((a,b)=>b[1].date - a[1].date).map((chat) => (
-        <div className="userChat" key={chat[0]} onClick={() => handleSelect(chat[1].userInfo)}>
-          <img src={chat[1].userInfo.photoURL} alt="img" />
-          <div className="userChatInfo">
-            <span>{chat[1].userInfo.displayName}</span>
-            <p>{chat[1].lastMessage?.text}</p>
+      {Object.entries(chats)
+        ?.sort((a, b) => b[1].date - a[1].date)
+        .map((chat) => (
+          <div
+            className="userChat"
+            key={chat[0]}
+            onClick={() => handleSelect(chat[1].userInfo)}
+          >
+            <ChatComponent userId={chat[1].userInfo.uid} lastMessage={chat[1].lastMessage?.text}/>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
+  );
+};
+
+const ChatComponent = ({ userId,lastMessage }) => {
+  const [userData,setUserData] = useState({});
+
+  useEffect(() => {
+    const getNewName = async (userId) => {
+      getDoc(doc(db, "users", userId)).then((data)=>{
+        setUserData(data.data());
+      })
+    };
+    getNewName(userId);
+    
+  }, []);
+
+
+  return (
+    <>
+      <img src={userData?.photoURL} alt="img" />
+      <div className="userChatInfo">
+        <span>{userData?.displayName}</span>
+        <p>{lastMessage}</p>
+      </div>
+    </>
   );
 };
