@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 
 export const Login = () => {
+  const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -23,12 +24,14 @@ export const Login = () => {
 
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      await signInWithEmailAndPassword(auth, email, password)
+      navigate("/")
+
     } catch (err) {
       console.log("last", err.message);
       setErr(true);
-    } finally {
+      
+    }finally{
       setLoading(false);
     }
   };

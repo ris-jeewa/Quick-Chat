@@ -7,6 +7,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Register = () => {
+  const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

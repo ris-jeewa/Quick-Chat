@@ -13,10 +13,12 @@ export const Settings = ({ currentUser, handleOpen }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErr(false);
+
     setLoading(true);
 
     try {
       const file = e.target[1].files[0];
+
       let downloadURL = currentUser.photoURL;
 
       if (file) {
@@ -25,6 +27,7 @@ export const Settings = ({ currentUser, handleOpen }) => {
 
         await uploadBytesResumable(storageRef, file);
         downloadURL = await getDownloadURL(storageRef);
+
       }
       await updateProfile(currentUser, {
         displayName: name,
